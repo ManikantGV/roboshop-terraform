@@ -18,6 +18,14 @@ resource "aws_instance" "frontend" {
   }
 }
 
+resource "aws_route53_record" "frontend" {
+  zone_id = "Z08997022LLSW1K3YTGW4"
+  name    = "frontend.guntikadevops.online"
+  type    = "A"
+  ttl     = 300
+  records = [aws_instance.frontend.private_ip]
+}
+
 resource "aws_instance" "mongo" {
   ami           = data.aws_ami.centos.image_id
   instance_type = "t3.micro"
@@ -25,6 +33,14 @@ resource "aws_instance" "mongo" {
   tags = {
     Name = "mongo"
   }
+}
+
+resource "aws_route53_record" "mongo" {
+  zone_id = "Z08997022LLSW1K3YTGW4"
+  name    = "mongo.guntikadevops.online"
+  type    = "A"
+  ttl     = 300
+  records = [aws_instance.mongo.private_ip]
 }
 
 resource "aws_instance" "catalogue" {
