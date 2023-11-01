@@ -5,112 +5,145 @@ data "aws_ami" "centos" {
 
 }
 
+data "aws_security_group" "allow-all" {
+  name="allow-all"
+}
+
+variable "instance_type" {
+  default = "t3.small"
+}
+
 output "ami" {
   value = data.aws_ami.centos.image_id
 }
 
-resource "aws_instance" "frontend" {
+variable "components" {
+  default = ["frontend","mongod","catalogue"]
+}
+
+resource "aws_instance" "instance" {
+  count = length(var.components)
   ami           = data.aws_ami.centos.image_id
-  instance_type = "t3.micro"
+  instance_type = var.instance_type
+  vpc_security_group_ids = [ data.aws_security_group.allow-all.id ]
 
   tags = {
-    Name = "frontend"
+    Name = var.components[count.index]
   }
 }
-
-resource "aws_route53_record" "frontend" {
-  zone_id = "Z08997022LLSW1K3YTGW4"
-  name    = "frontend.guntikadevops.online"
-  type    = "A"
-  ttl     = 300
-  records = [aws_instance.frontend.private_ip]
-}
-
-resource "aws_instance" "mongo" {
-  ami           = data.aws_ami.centos.image_id
-  instance_type = "t3.micro"
-
-  tags = {
-    Name = "mongo"
-  }
-}
-
-resource "aws_route53_record" "mongo" {
-  zone_id = "Z08997022LLSW1K3YTGW4"
-  name    = "mongo.guntikadevops.online"
-  type    = "A"
-  ttl     = 300
-  records = [aws_instance.mongo.private_ip]
-}
-
-resource "aws_instance" "catalogue" {
-  ami           = data.aws_ami.centos.image_id
-  instance_type = "t3.micro"
-
-  tags = {
-    Name = "catalogue"
-  }
-}
-
-resource "aws_instance" "cart" {
-  ami           = data.aws_ami.centos.image_id
-  instance_type = "t3.micro"
-
-  tags = {
-    Name = "cart"
-  }
-}
-
-resource "aws_instance" "redis" {
-  ami           = data.aws_ami.centos.image_id
-  instance_type = "t3.micro"
-
-  tags = {
-    Name = "redis"
-  }
-}
-
-resource "aws_instance" "user" {
-  ami           = data.aws_ami.centos.image_id
-  instance_type = "t3.micro"
-
-  tags = {
-    Name = "user"
-  }
-}
-
-resource "aws_instance" "mysql" {
-  ami           = data.aws_ami.centos.image_id
-  instance_type = "t3.micro"
-
-  tags = {
-    Name = "mysql"
-  }
-}
-
-resource "aws_instance" "shipping" {
-  ami           = data.aws_ami.centos.image_id
-  instance_type = "t3.micro"
-
-  tags = {
-    Name = "shipping"
-  }
-}
-
-resource "aws_instance" "rabbitmq" {
-  ami           = data.aws_ami.centos.image_id
-  instance_type = "t3.micro"
-
-  tags = {
-    Name = "rabbitmq"
-  }
-}
-
-resource "aws_instance" "payment" {
-  ami           = data.aws_ami.centos.image_id
-  instance_type = "t3.micro"
-
-  tags = {
-    Name = "payment"
-  }
+#
+#resource "aws_instance" "frontend" {
+#  ami           = data.aws_ami.centos.image_id
+#  instance_type = var.instance_type
+#  vpc_security_group_ids = [ data.aws_security_group.allow-all.id ]
+#
+#  tags = {
+#    Name = "frontend"
+#  }
+#}
+#
+#resource "aws_route53_record" "frontend" {
+#  zone_id = "Z08997022LLSW1K3YTGW4"
+#  name    = "frontend.guntikadevops.online"
+#  type    = "A"
+#  ttl     = 300
+#  records = [aws_instance.frontend.private_ip]
+#}
+#
+#resource "aws_instance" "mongo" {
+#  ami           = data.aws_ami.centos.image_id
+#  instance_type = var.instance_type
+#  vpc_security_group_ids = [ data.aws_security_group.allow-all.id ]
+#
+#  tags = {
+#    Name = "mongo"
+#  }
+#}
+#
+#resource "aws_route53_record" "mongo" {
+#  zone_id = "Z08997022LLSW1K3YTGW4"
+#  name    = "mongo.guntikadevops.online"
+#  type    = "A"
+#  ttl     = 300
+#  records = [aws_instance.mongo.private_ip]
+#}
+#
+#resource "aws_instance" "catalogue" {
+#  ami           = data.aws_ami.centos.image_id
+#  instance_type = var.instance_type
+#  vpc_security_group_ids = [ data.aws_security_group.allow-all.id ]
+#
+#  tags = {
+#    Name = "catalogue"
+#  }
+#}
+#
+#resource "aws_instance" "cart" {
+#  ami           = data.aws_ami.centos.image_id
+#  instance_type = var.instance_type
+#  vpc_security_group_ids = [ data.aws_security_group.allow-all.id ]
+#
+#  tags = {
+#    Name = "cart"
+#  }
+#}
+#
+#resource "aws_instance" "redis" {
+#  ami           = data.aws_ami.centos.image_id
+#  instance_type = var.instance_type
+#  vpc_security_group_ids = [ data.aws_security_group.allow-all.id ]
+#
+#  tags = {
+#    Name = "redis"
+#  }
+#}
+#
+#resource "aws_instance" "user" {
+#  ami           = data.aws_ami.centos.image_id
+#  instance_type = var.instance_type
+#  vpc_security_group_ids = [ data.aws_security_group.allow-all.id ]
+#
+#  tags = {
+#    Name = "user"
+#  }
+#}
+#
+#resource "aws_instance" "mysql" {
+#  ami           = data.aws_ami.centos.image_id
+#  instance_type = var.instance_type
+#  vpc_security_group_ids = [ data.aws_security_group.allow-all.id ]
+#
+#  tags = {
+#    Name = "mysql"
+#  }
+#}
+#
+#resource "aws_instance" "shipping" {
+#  ami           = data.aws_ami.centos.image_id
+#  instance_type = var.instance_type
+#  vpc_security_group_ids = [ data.aws_security_group.allow-all.id ]
+#
+#  tags = {
+#    Name = "shipping"
+#  }
+#}
+#
+#resource "aws_instance" "rabbitmq" {
+#  ami           = data.aws_ami.centos.image_id
+#  instance_type = var.instance_type
+#  vpc_security_group_ids = [ data.aws_security_group.allow-all.id ]
+#
+#  tags = {
+#    Name = "rabbitmq"
+#  }
+#}
+#
+#resource "aws_instance" "payment" {
+#  ami           = data.aws_ami.centos.image_id
+#  instance_type = var.instance_type
+#  vpc_security_group_ids = [ data.aws_security_group.allow-all.id ]
+#
+#  tags = {
+#    Name = "payment"
+#  }
 }
