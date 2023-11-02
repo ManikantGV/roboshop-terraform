@@ -31,6 +31,7 @@ resource "aws_instance" "instance" {
     Name = var.components[count.index]
   }
 }
+
 #
 #resource "aws_instance" "frontend" {
 #  ami           = data.aws_ami.centos.image_id
