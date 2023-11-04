@@ -53,7 +53,7 @@ resource "aws_route53_record" "frontend" {
   name    = "${each.value["name"]}.guntikadevops.online"
   type    = "A"
   ttl     = 300
-  records = [aws_instance.instance[each.value["Name"]].private_ip]
+  records = [aws_instance.instance[each.value["name"]].private_ip]
 }
 
 #
