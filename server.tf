@@ -47,6 +47,15 @@ resource "aws_instance" "instance" {
   }
 }
 
+resource "aws_route53_record" "frontend" {
+  for_each = var.components
+  zone_id = "Z08997022LLSW1K3YTGW4"
+  name    = "${each.value["name"]}.guntikadevops.online"
+  type    = "A"
+  ttl     = 300
+  records = [aws_instance.instance[each.value["Name"]].private_ip]
+}
+
 #
 #resource "aws_instance" "frontend" {
 #  ami           = data.aws_ami.centos.image_id
