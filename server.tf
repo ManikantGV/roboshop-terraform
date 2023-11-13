@@ -1,39 +1,4 @@
-data "aws_ami" "centos" {
-  most_recent      = true
-  name_regex       = "Centos-8-DevOps-Practice"
-  owners           = ["973714476881"]
 
-}
-
-data "aws_security_group" "allow-all" {
-  name="allow-all"
-}
-
-#variable "instance_type" {
-#  default = "t3.small"
-#}
-
-output "ami" {
-  value = data.aws_ami.centos.image_id
-}
-
-variable "components" {
-  default = {
-    frontend={
-      name="frontend"
-      instance_type="t3.small"
-    }
-    mongodb={
-      name="mongodb"
-      instance_type="t3.micro"
-    }
-    catalogue={
-      name="catalogue"
-      instance_type="t3.small"
-    }
-  }
-
-}
 
 resource "aws_instance" "instance" {
   #count = length(var.components)
