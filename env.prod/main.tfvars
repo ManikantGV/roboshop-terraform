@@ -13,4 +13,4 @@ components= {
   }
 }
 
-env="prod"
+env = "prod"
