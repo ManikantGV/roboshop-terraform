@@ -1,13 +1,13 @@
-components={
-  frontend={
+components = {
+  frontend= {
     name="frontend"
     instance_type="t3.small"
   }
-  mongodb={
+  mongodb= {
     name="mongodb"
     instance_type="t3.micro"
   }
-  catalogue={
+  catalogue= {
     name="catalogue"
     instance_type="t3.small"
   }
