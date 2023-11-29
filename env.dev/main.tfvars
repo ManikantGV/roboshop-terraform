@@ -1,4 +1,4 @@
-components = {
+components= {
   frontend= {
     name="frontend"
     instance_type="t3.small"
@@ -9,6 +9,38 @@ components = {
   }
   catalogue= {
     name="catalogue"
+    instance_type="t3.small"
+  }
+  redis= {
+    name="redis"
+    instance_type="t3.small"
+  }
+  user= {
+    name="user"
+    instance_type="t3.small"
+  }
+  cart= {
+    name="cart"
+    instance_type="t3.small"
+  }
+  mysql= {
+    name="mysql"
+    instance_type="t3.small"
+  }
+  shipping= {
+    name="shipping"
+    instance_type="t3.small"
+  }
+  rabbitMQ= {
+    name="rabbitMQ"
+    instance_type="t3.small"
+  }
+  payment= {
+    name="payment"
+    instance_type="t3.small"
+  }
+  dispatch= {
+    name="dispatch"
     instance_type="t3.small"
   }
 }
