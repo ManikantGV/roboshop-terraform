@@ -1,5 +1,4 @@
 
-
 resource "aws_instance" "instance" {
   #count = length(var.components)
   for_each = var.components
@@ -29,7 +28,30 @@ resource "aws_instance" "instance" {
   }
 }
 
-resource "aws_route53_record" "frontend" {
+resource "null_resource" "provisioner" {
+
+  depends_on = [aws_instance.instance,aws_route53_record.records]
+
+  for_each = var.components
+  provisioner "remote-exec" {
+    connection {
+      type     = "ssh"
+      user     = "centos"
+      password = "DevOps321"
+      host     = [aws_instance.instance[each.value["name"]].private_ip]
+    }
+
+    inline= [
+      "rm -f Roboshop",
+      "git clone https://github.com/ManikantGV/Roboshop",
+      "cd Roboshop",
+      "sudo bash ${each.value["name"]}.sh"
+    ]
+
+  }
+}
+
+resource "aws_route53_record" "records" {
   for_each = var.components
   zone_id = "Z08997022LLSW1K3YTGW4"
   name    = "${each.value["name"]}.guntikadevops.online"
