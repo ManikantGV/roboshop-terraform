@@ -40,7 +40,7 @@ components= {
   payment= {
     name="payment"
     instance_type="t3.small"
-    password="roboshop123"
+    #password="roboshop123"
   }
   dispatch= {
     name="dispatch"
