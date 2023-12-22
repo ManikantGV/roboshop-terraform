@@ -26,7 +26,7 @@ resource "null_resource" "provisioner" {
     }
 
     inline= [
-      "rmdir -f Roboshop",
+      "rm -rf Roboshop",
       "git clone https://github.com/ManikantGV/Roboshop",
       "cd Roboshop",
       "sudo bash ${each.value["name"]}.sh ${lookup(each.value,"password","null")}"
