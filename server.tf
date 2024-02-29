@@ -2,7 +2,7 @@ module "database-servers" {
   for_each = var.database_servers
   source = "./module"
   component_name = each.value["name"]
-  #env = var.env
+  env = var.env
   instance_type = each.value["instance_type"]
   password = lookup(each.value,"password","null" )
   provisioner = true
@@ -14,7 +14,7 @@ module "apps-servers" {
   for_each = var.apps_servers
   source = "./module"
   component_name = each.value["name"]
-  #env = var.env
+  env = var.env
   instance_type = each.value["instance_type"]
   password = lookup(each.value,"password","null" )
   provisioner = true
