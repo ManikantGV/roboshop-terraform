@@ -34,3 +34,23 @@ resource "aws_route53_record" "records" {
   records = [aws_instance.instance.private_ip]
 }
 
+resource "aws_iam_role" "test_role" {
+  name = "${var.component_name}-${var.env}"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Sid    = ""
+        Principal = {
+          Service = "ec2.amazonaws.com"
+        }
+      },
+    ]
+  })
+
+  tags = {
+    tag-key = "${var.component_name}-${var.env}"
+  }
+}
