@@ -35,7 +35,7 @@ resource "aws_route53_record" "records" {
   records = [aws_instance.instance.private_ip]
 }
 
-resource "aws_iam_role" "test_role" {
+resource "aws_iam_role" "role" {
   name = "${var.component_name}-${var.env}"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -58,12 +58,12 @@ resource "aws_iam_role" "test_role" {
 
 resource "aws_iam_instance_profile" "instance_profile" {
   name = "${var.component_name}-${var.env}"
-  role = aws_iam_role.test_role.name
+  role = aws_iam_role.role.name
 }
 
 resource "aws_iam_role_policy" "ssm_ps_policy" {
   name = "${var.component_name}-${var.env}-ssm-ps-policy"
-  role = aws_iam_role.test_role.id
+  role = aws_iam_role.role.id
 
    policy = jsonencode(
      {
